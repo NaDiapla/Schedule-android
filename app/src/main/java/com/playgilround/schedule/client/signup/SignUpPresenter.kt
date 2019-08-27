@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.JsonObject
 import com.playgilround.schedule.client.ScheduleApplication
 import com.playgilround.schedule.client.data.User
+import com.playgilround.schedule.client.model.ResponseMessage
 import com.playgilround.schedule.client.retrofit.APIClient
 import com.playgilround.schedule.client.retrofit.UserAPI
 import com.playgilround.schedule.client.signup.model.UserDataModel
@@ -11,6 +12,9 @@ import com.playgilround.schedule.client.signup.view.SignUpAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 class SignUpPresenter constructor(mContext: Context, private val mView: SignUpContract.View, private val mUserDataModel: UserDataModel): SignUpContract.Presenter {
@@ -129,7 +133,20 @@ class SignUpPresenter constructor(mContext: Context, private val mView: SignUpCo
         jsonObject.addProperty("birth", mUser.birth)
         jsonObject.addProperty("language", mUser.language)
 
-        mView.signUpComplete()
+        //mView.signUpComplete()
+        userAPI.signUp(jsonObject).enqueue(object: Callback<ResponseMessage> {
+            override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
+                if (response.isSuccessful && response.body() != null) {
+                    mView.signUpComplete()
+                } else {
+                    mView.signUpError(ERROR_SIGN_UP)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                mView.signUpError(ERROR_NETWORK_CUSTOM)
+            }
+        })
         /*userAPI.signUp(jsonObject).enqueue(new Callback<ResponseMessage>() {
           @Override
           public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {

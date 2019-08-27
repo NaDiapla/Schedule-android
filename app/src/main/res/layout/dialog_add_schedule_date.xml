@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="360dp"
+    android:layout_height="377dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/image_add_date"
+        android:id="@+id/imageViewLayout"/>
+
+    <com.playgilround.schedule.client.calendar.CalendarView
+        android:id="@+id/dialogDateCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:selectionColor="@color/light_indigo"
+        app:type="one_day_picker"/>
+
+</RelativeLayout>

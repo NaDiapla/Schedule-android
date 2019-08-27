@@ -2,6 +2,8 @@ package com.playgilround.schedule.client.addschedule.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -16,9 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.playgilround.schedule.client.R
 import com.playgilround.schedule.client.addschedule.model.ScheduleDataModel
 import com.playgilround.schedule.client.data.FriendList
+import com.playgilround.schedule.client.dialog.AddScheduleDateDialog
+import com.playgilround.schedule.client.dialog.AddScheduleTimeDialog
 import com.playgilround.schedule.client.friend.view.FriendListAdapter
 import com.playgilround.schedule.client.util.OnEditorAdapterListener
 import java.lang.IllegalArgumentException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddScheduleAdapter constructor(private val mContext: Context?, private val friendList: FriendList?): RecyclerView.Adapter<AddScheduleAdapter.RootViewHolder>(), ScheduleDataModel{
 
@@ -118,6 +124,7 @@ class AddScheduleAdapter constructor(private val mContext: Context?, private val
                 return mTitleViewHolder
             }
             TYPE_SCHEDULE_DATE -> {
+                Log.d("TEST", "DateViewHolder")
                 val view = LayoutInflater.from(mContext).inflate(R.layout.item_add_schedule_date, parent, false)
                 mDateViewHolder = DateViewHolder(view)
                 return mDateViewHolder
@@ -167,7 +174,53 @@ class AddScheduleAdapter constructor(private val mContext: Context?, private val
     }
 
     inner class DateViewHolder(itemView: View): EmptyViewHolder(itemView) {
+        private var mStartDate = itemView.findViewById(R.id.tvStartDate) as TextView
+        private var mEndDate = itemView.findViewById(R.id.tvEndDate) as TextView
+        private var dateDialog = AddScheduleDateDialog(mContext)
+        private var timeDialog = AddScheduleTimeDialog(mContext)
 
+        private var startDate = Calendar.getInstance()
+        private var endDate = Calendar.getInstance()
+
+        private val dateFormat = SimpleDateFormat("YYYY.MM.dd E요일   HH:mm", Locale.KOREAN)
+
+        override fun bind(position: Int) {
+            mStartDate.text = dateFormat.format(Date(System.currentTimeMillis()))
+            mEndDate.text = dateFormat.format(Date(System.currentTimeMillis()))
+
+            dateDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            timeDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            mStartDate.setOnClickListener {
+                dateDialog.show()
+                dateDialog.setOnDismissListener {
+                    startDate = dateDialog.getDate()
+                    timeDialog.show()
+                    timeDialog.setOnDismissListener {
+                        val timeArray = timeDialog.getTime()
+                        startDate.set(Calendar.HOUR_OF_DAY, timeArray[0])
+                        startDate.set(Calendar.MINUTE, timeArray[1])
+                        mStartDate.text = dateFormat.format(startDate.timeInMillis)
+                    }
+                }
+            }
+            mEndDate.setOnClickListener {
+                dateDialog.show()
+                dateDialog.setOnDismissListener {
+                    endDate = dateDialog.getDate()
+                    timeDialog.show()
+                    timeDialog.setOnDismissListener {
+                        val timeArray = timeDialog.getTime()
+                        endDate.set(Calendar.HOUR_OF_DAY, timeArray[0])
+                        endDate.set(Calendar.MINUTE, timeArray[1])
+                        mEndDate.text = dateFormat.format(startDate.timeInMillis)
+                    }
+                }
+            }
+        }
+
+        fun getDate(): Array<Long> {
+            return arrayOf(startDate.timeInMillis, endDate.timeInMillis)
+        }
     }
 
     inner class MemberViewHolder(itemView: View): RecyclerViewHolder(itemView) {
@@ -209,6 +262,10 @@ class AddScheduleAdapter constructor(private val mContext: Context?, private val
     override fun getScheduleTitle(): String? {
         return mTitleViewHolder.getContent()
     }
+
+    /*override fun getScheduleDateTime(): Array<Long>? {
+        return mDateViewHolder.getDate()
+    }*/
 
     fun setFocus() {
         when (this.position) {

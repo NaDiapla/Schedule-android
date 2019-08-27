@@ -78,8 +78,8 @@ class SignInActivity : Activity(), SignInContract.View {
 
     fun setOnClickListener() {
         ivlogin.setOnClickListener {
-            val email = etEmail.text.toString()
-            val password = etPassword.text.toString()
+            val email = etEmail.text.toString().trim()
+            val password = etPassword.text.toString().trim()
 
             mPresenter.signIn(email, password)
         }

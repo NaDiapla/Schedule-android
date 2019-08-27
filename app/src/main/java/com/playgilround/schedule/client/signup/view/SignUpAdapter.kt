@@ -197,12 +197,12 @@ class SignUpAdapter(private val context: Context): RecyclerView.Adapter<SignUpAd
             val monthNumberPicker = dataPicker.findViewById(monthID) as NumberPicker
             val dayNumberPicker = dataPicker.findViewById(dayID) as NumberPicker
 
-            setDeviderColor(yearNumberPicker)
-            setDeviderColor(monthNumberPicker)
-            setDeviderColor(dayNumberPicker)
+            setDividerColor(yearNumberPicker)
+            setDividerColor(monthNumberPicker)
+            setDividerColor(dayNumberPicker)
         }
 
-        private fun setDeviderColor(np: NumberPicker) {
+        private fun setDividerColor(np: NumberPicker) {
 
             val count = np.childCount
             for (i in 0..count) {

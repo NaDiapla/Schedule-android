@@ -4,7 +4,7 @@ public class BaseUrl {
 
     // Readme 앞으로는 아래에 IP만 바꿔서 사용하기
     // static final String BASE_URL = "http://schedule-prod.ap-northeast-2.elasticbeanstalk.com/api/v1/";
-    static final String BASE_URL = "http://192.168.150.11:8000/";
+    static final String BASE_URL = "http://192.168.150.12:8000/";
 
 
     static final String PATH_TOKEN_SIGN_IN = "api-token-verify/";

@@ -3,6 +3,7 @@ package com.playgilround.schedule.client.addschedule;
 import android.content.Context;
 import android.util.Log;
 
+import com.playgilround.schedule.client.R;
 import com.playgilround.schedule.client.ScheduleApplication;
 import com.playgilround.schedule.client.addschedule.model.ScheduleDataModel;
 import com.playgilround.schedule.client.addschedule.view.AddScheduleAdapter;
@@ -16,6 +17,10 @@ import com.playgilround.schedule.client.model.ResponseMessage;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -63,11 +68,16 @@ public class TestAddSchedulePresenter implements TestAddScheduleContract.Present
         switch (position) {
             case AddScheduleAdapter.TYPE_SCHEDULE_TITLE: {
                 mSchedule.setTitle(mScheduleDataModel.getScheduleTitle());
+                //mSchedule.setTitle("TEST");
                 check = mSchedule.getTitle() != null;
             }
             case AddScheduleAdapter.TYPE_SCHEDULE_DATE: {
+                SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.text_date_all_format), Locale.ENGLISH);
+                //mSchedule.setStartDate(format.format(mScheduleDataModel.getScheduleDateTime()[0]));
+                //mSchedule.setEndDate(format.format(mScheduleDataModel.getScheduleDateTime()[1]));
                 mSchedule.setStartDate("2019-06-22T17:30:00");
                 mSchedule.setEndDate("2019-06-22T17:30:00");
+                //check = mScheduleDataModel.getScheduleDateTime()[0] < mScheduleDataModel.getScheduleDateTime()[1];
                 check = true;
             }
             case AddScheduleAdapter.TYPE_SCHEDULE_MEMBER: {

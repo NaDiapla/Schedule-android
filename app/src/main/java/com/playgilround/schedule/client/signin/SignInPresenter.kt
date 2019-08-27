@@ -10,7 +10,7 @@ import com.playgilround.schedule.client.data.repository.UsersRepository
 import com.playgilround.schedule.client.data.source.UsersDataSource
 import javax.inject.Inject
 
-class SignInPresenter constructor(private val mContext: Context, private val mView: SignInContract.View):
+class  SignInPresenter constructor(private val mContext: Context, private val mView: SignInContract.View):
         SignInContract.Presenter, UsersDataSource.LoginCallBack {
 
     @Inject

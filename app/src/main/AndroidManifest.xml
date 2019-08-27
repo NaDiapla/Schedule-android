@@ -61,6 +61,11 @@
 
         <activity android:name=".signin.SignInActivity" />
         <activity android:name=".main.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
     <!--    <activity
@@ -81,11 +86,7 @@
             android:theme="@style/ThemeDialog" />
 
         <activity android:name=".tutorial.TutorialActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity

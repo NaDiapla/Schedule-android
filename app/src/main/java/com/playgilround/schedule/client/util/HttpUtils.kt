@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 class HttpUtils @Inject constructor(private val mContext: Context) {
-    private val API_BASE_URL = "http://192.168.150.11:8000/"
+    private val API_BASE_URL = "http://192.168.150.12:8000/"
 
     private var retrofitKey: Retrofit? = null
 

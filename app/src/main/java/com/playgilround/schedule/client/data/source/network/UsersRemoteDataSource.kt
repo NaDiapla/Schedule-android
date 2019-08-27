@@ -53,7 +53,7 @@ class UsersRemoteDataSource @Inject constructor(val context: Context) : UsersDat
     private var isKakaoLogin = false
 
     override fun login(email: String, password: String, loginCallBack: UsersDataSource.LoginCallBack) {
-        if (checkEmail(email)) {
+        if (!checkEmail(email)) {
             loginCallBack.onDataNotAvailable(ERROR_EMAIL)
             return
         }
@@ -149,7 +149,7 @@ class UsersRemoteDataSource @Inject constructor(val context: Context) : UsersDat
                 // 로그인 성공
                 accessToken = AccessToken.getCurrentAccessToken().token
                 postRestAuth(LOGIN_TYPE_FACEBOOK, accessToken, loginCallBack)
-                Log.d("TESTLOG", "페이스북 로그인 성공 \ntoken:" + accessToken)
+                Log.d("TESTLOG", "페이스북 로그인 성공 \ntoken: $accessToken")
             }
 
             override fun onCancel() {
@@ -190,7 +190,7 @@ class UsersRemoteDataSource @Inject constructor(val context: Context) : UsersDat
                 if (p0) {
                     accessToken = oAuthLogin.getAccessToken(context)
                     postRestAuth(LOGIN_TYPE_NAVER, accessToken, loginCallBack)
-                    Log.d("TESTLOG", "네이버 로그인 성공 \ntoken:" + accessToken)
+                    Log.d("TESTLOG", "네이버 로그인 성공 \ntoken: $accessToken")
                     //refreshToken = oAuthLogin.getRefreshToken(context)
                     //expiresAt = oAuthLogin.getExpiresAt(context)
                     //tokenType = oAuthLogin.getTokenType(context)
@@ -242,7 +242,7 @@ class UsersRemoteDataSource @Inject constructor(val context: Context) : UsersDat
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             // 로그인 성공 시 처리
-                            Log.d("TESTLOG", "구글 로그인 성공 \ntoken:" + account.idToken)
+                            Log.d("TESTLOG", "구글 로그인 성공 \ntoken: ${account.idToken}")
                             postRestAuth(LOGIN_TYPE_GOOGLE, account.idToken!!, loginCallBack)
                         } else {
                             // 로그인 실패 시 처리
@@ -264,7 +264,7 @@ class UsersRemoteDataSource @Inject constructor(val context: Context) : UsersDat
                 restAuthAPI.postFacebookLogin(token).enqueue(object : Callback<JsonObject>{
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         if (response.isSuccessful && response.body() != null) {
-                            Log.d("TESTLOG", "페이스북 우리 서버 로그인 성공 \ntoken:" + token)
+                            Log.d("TESTLOG", "페이스북 우리 서버 로그인 성공 \ntoken: $token")
                             loginCallBack.onUserLoaded()
                         } else {
                             loginCallBack.onDataNotAvailable(ERROR_FAIL_SIGN_IN)
@@ -280,7 +280,7 @@ class UsersRemoteDataSource @Inject constructor(val context: Context) : UsersDat
                 restAuthAPI.postNaverLogin(token).enqueue(object : Callback<JsonObject>{
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         if (response.isSuccessful && response.body() != null) {
-                            Log.d("TESTLOG", "네이버 우리 서버 로그인 성공 \ntoken:" + token)
+                            Log.d("TESTLOG", "네이버 우리 서버 로그인 성공 \ntoken: $token")
                             loginCallBack.onUserLoaded()
                         } else {
                             loginCallBack.onDataNotAvailable(ERROR_FAIL_SIGN_IN)
@@ -296,7 +296,7 @@ class UsersRemoteDataSource @Inject constructor(val context: Context) : UsersDat
                 restAuthAPI.postKakaoLogin(token).enqueue(object : Callback<JsonObject>{
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         if (response.isSuccessful && response.body() != null) {
-                            Log.d("TESTLOG", "카카오 우리 서버 로그인 성공 \ntoken:" + token)
+                            Log.d("TESTLOG", "카카오 우리 서버 로그인 성공 \ntoken: $token")
                             loginCallBack.onUserLoaded()
                         } else {
                             loginCallBack.onDataNotAvailable(ERROR_FAIL_SIGN_IN)
@@ -312,7 +312,7 @@ class UsersRemoteDataSource @Inject constructor(val context: Context) : UsersDat
                 restAuthAPI.postGoogleLogin(token).enqueue(object : Callback<JsonObject>{
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         if (response.isSuccessful && response.body() != null) {
-                            Log.d("TESTLOG", "구글 우리 서버 로그인 성공 \ntoken:" + token)
+                            Log.d("TESTLOG", "구글 우리 서버 로그인 성공 \ntoken: $token")
                             loginCallBack.onUserLoaded()
                         } else {
                             loginCallBack.onDataNotAvailable(ERROR_FAIL_SIGN_IN)
@@ -380,7 +380,7 @@ class UsersRemoteDataSource @Inject constructor(val context: Context) : UsersDat
                 }
 
                 override fun onSuccess(result: MeV2Response?) {
-                    Log.d("TESTLOG", "카카오 로그인 성공 \ntoken:" + Session.getCurrentSession().tokenInfo.accessToken)
+                    Log.d("TESTLOG", "카카오 로그인 성공 \ntoken: ${Session.getCurrentSession().tokenInfo.accessToken}")
                     postRestAuth(LOGIN_TYPE_KAKAO, Session.getCurrentSession().tokenInfo.accessToken, loginCallBack)
                 }
             })
